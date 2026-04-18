@@ -8,8 +8,12 @@ export default function Home() {
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+
     const fetchImages = async () => {
       try {
         const response = await getImages();
@@ -46,7 +50,7 @@ export default function Home() {
   return (
     <div className="home">
       <h1>Danh sách ảnh</h1>
-      <ImageList images={images} />
+      <ImageList images={images} token={token} />
     </div>
   );
 }

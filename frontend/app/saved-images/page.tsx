@@ -10,6 +10,7 @@ export default function SavedImagesPage() {
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   const fetchSavedImages = async (authToken: string) => {
     console.log("fetchSavedImages called with token:", authToken);
@@ -82,7 +83,7 @@ export default function SavedImagesPage() {
   return (
     <div className="saved-images-page">
       <h1>Ảnh đã lưu</h1>
-      <ImageList images={images} />
+      <ImageList images={images} token={token} />
     </div>
   );
 }

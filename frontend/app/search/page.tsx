@@ -13,6 +13,12 @@ function SearchContent() {
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   const handleSearch = async (searchQuery: string) => {
     console.log("handleSearch called with query:", searchQuery);
@@ -62,7 +68,7 @@ function SearchContent() {
           {query ? (
             <>
               <p>Kết quả cho: &quot;{query}&quot;</p>
-              <ImageList images={images} />
+              <ImageList images={images} token={token} />
             </>
           ) : (
             <p className="no-images">Nhập từ khóa để bắt đầu tìm kiếm.</p>

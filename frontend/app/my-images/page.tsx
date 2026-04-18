@@ -67,7 +67,7 @@ export default function MyImagesPage() {
           Tạo ảnh mới
         </a>
       </div>
-      <ImageList images={images} />
+      <ImageList images={images} token={token} onDelete={handleDeleteImage} />
       {/* Có thể thêm nút xóa cho mỗi ảnh trong ImageCard */}
     </div>
   );
