@@ -15,15 +15,27 @@ function SearchContent() {
   const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async (searchQuery: string) => {
-    if (!searchQuery.trim()) return;
+    console.log("handleSearch called with query:", searchQuery);
+
+    if (!searchQuery.trim()) {
+      console.warn("handleSearch aborted: empty query");
+      setImages([]);
+      return;
+    }
 
     setLoading(true);
     setError(null);
 
     try {
+      console.log("handleSearch calling searchImages with:", searchQuery);
       const response = await searchImages(searchQuery);
-      setImages(response.data.items);
+      console.log("handleSearch response:", response);
+
+      const imagesData = response.data?.items ?? [];
+      console.log("handleSearch setting images:", imagesData);
+      setImages(imagesData);
     } catch (err) {
+      console.error("handleSearch error:", err);
       setError(err instanceof Error ? err.message : "Lỗi tìm kiếm");
     } finally {
       setLoading(false);

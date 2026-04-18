@@ -34,7 +34,7 @@ export default function SavedImagesPage() {
         throw new Error(response.message || "API returned false status");
       }
 
-      const imagesData = response.data?.items ?? [];
+      const imagesData = response.data ?? [];
       console.log("fetchSavedImages setting images:", imagesData);
       setImages(imagesData);
     } catch (err) {

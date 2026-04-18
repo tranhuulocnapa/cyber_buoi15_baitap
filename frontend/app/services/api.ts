@@ -190,11 +190,7 @@ export const updateUser = async (
 
 export const getSavedImages = async (
   token: string,
-): Promise<{
-  status: boolean;
-  message: string;
-  data: { items: Image[]; pagination: Pagination };
-}> => {
+): Promise<{ status: boolean; message: string; data: Image[] }> => {
   const response = await fetch(`${API_BASE_URL}/users/saved-images`, {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface SearchFormProps {
   onSearch: (query: string) => void;
@@ -9,11 +10,15 @@ export default function SearchForm({
   onSearch,
   initialQuery = "",
 }: SearchFormProps) {
+  const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(query);
+    if (query.trim()) {
+      router.push(`/search?q=${encodeURIComponent(query)}`);
+      onSearch(query);
+    }
   };
 
   return (
