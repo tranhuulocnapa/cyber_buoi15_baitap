@@ -8,7 +8,13 @@
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import type { Multer } from 'multer';
 import { ImagesService } from './images.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -64,11 +70,34 @@ export class ImagesController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, callback) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+        },
+      }),
+      fileFilter: (req, file, callback) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+          return callback(new Error('Chỉ chấp nhận file ảnh'), false);
+        }
+        callback(null, true);
+      },
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+      },
+    }),
+  )
   async createImage(
     @CurrentUser('id') userId: number,
     @Body() dto: CreateImageDto,
+    @UploadedFile() file: Multer.File,
   ) {
-    const image = await this.imagesService.createImage(userId, dto);
+    const image = await this.imagesService.createImage(userId, dto, file);
     return {
       status: true,
       message: 'Tạo ảnh thành công',

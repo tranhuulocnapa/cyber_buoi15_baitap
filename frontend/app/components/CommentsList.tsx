@@ -1,4 +1,4 @@
-import { Comment } from "../services/api";
+import { Comment, getImageUrl } from "../services/api";
 
 interface CommentsListProps {
   comments: Comment[];
@@ -16,7 +16,11 @@ export default function CommentsList({ comments }: CommentsListProps) {
         <div key={comment.binh_luan_id} className="comment-item">
           <div className="comment-header">
             <img
-              src={comment.nguoi_dung.anh_dai_dien || "/default-avatar.png"}
+              src={
+                comment.nguoi_dung.anh_dai_dien
+                  ? getImageUrl(comment.nguoi_dung.anh_dai_dien)
+                  : "/default-avatar.png"
+              }
               alt={comment.nguoi_dung.ho_ten}
               className="comment-avatar"
             />

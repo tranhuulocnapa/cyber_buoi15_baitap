@@ -5,6 +5,7 @@
 } from '@nestjs/common';
 import { PrismaService } from '../../modules-system/prisma/prisma.service';
 import { CreateImageDto } from './dto/create-image.dto';
+import type { Multer } from 'multer';
 
 @Injectable()
 export class ImagesService {
@@ -42,11 +43,7 @@ export class ImagesService {
     };
   }
 
-  async searchImages(
-    name: string,
-    page: number = 1,
-    limit: number = 10,
-  ) {
+  async searchImages(name: string, page: number = 1, limit: number = 10) {
     const skip = (page - 1) * limit;
 
     const [images, total] = await Promise.all([
@@ -111,11 +108,13 @@ export class ImagesService {
     return image;
   }
 
-  async createImage(userId: number, dto: CreateImageDto) {
+  async createImage(userId: number, dto: CreateImageDto, file: Multer.File) {
+    const duong_dan = `/uploads/${file.filename}`;
+
     const image = await this.prisma.hinh_anh.create({
       data: {
         ten_hinh: dto.ten_hinh,
-        duong_dan: dto.duong_dan,
+        duong_dan,
         mo_ta: dto.mo_ta,
         nguoi_dung_id: userId,
       },

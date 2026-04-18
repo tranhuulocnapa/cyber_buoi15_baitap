@@ -1,4 +1,4 @@
-import { Image } from "../services/api";
+import { Image, getImageUrl } from "../services/api";
 
 interface ImageCardProps {
   image: Image;
@@ -8,7 +8,7 @@ export default function ImageCard({ image }: ImageCardProps) {
   return (
     <div className="image-card">
       <img
-        src={image.duong_dan}
+        src={getImageUrl(image.duong_dan)}
         alt={image.ten_hinh}
         className="image-card__img"
       />

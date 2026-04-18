@@ -7,6 +7,7 @@ import {
   getComments,
   Image,
   Comment,
+  getImageUrl,
 } from "../../services/api";
 import CommentsList from "../../components/CommentsList";
 import CreateCommentForm from "../../components/forms/CreateCommentForm";
@@ -66,7 +67,7 @@ export default function ImageDetailPage() {
     <div className="image-detail-page">
       <div className="image-detail">
         <img
-          src={image.duong_dan}
+          src={getImageUrl(image.duong_dan)}
           alt={image.ten_hinh}
           className="image-detail__img"
         />
@@ -75,7 +76,11 @@ export default function ImageDetailPage() {
           {image.mo_ta && <p className="description">{image.mo_ta}</p>}
           <div className="author">
             <img
-              src={image.nguoi_dung.anh_dai_dien || "/default-avatar.png"}
+              src={
+                image.nguoi_dung.anh_dai_dien
+                  ? getImageUrl(image.nguoi_dung.anh_dai_dien)
+                  : "/default-avatar.png"
+              }
               alt={image.nguoi_dung.ho_ten}
               className="author-avatar"
             />

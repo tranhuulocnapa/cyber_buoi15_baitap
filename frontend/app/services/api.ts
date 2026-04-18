@@ -1,5 +1,12 @@
 const API_BASE_URL = "http://localhost:3069";
 
+export const getImageUrl = (duong_dan: string) => {
+  if (duong_dan.startsWith("http")) {
+    return duong_dan;
+  }
+  return `${API_BASE_URL}${duong_dan}`;
+};
+
 export interface Image {
   hinh_id: number;
   ten_hinh: string;
@@ -62,12 +69,6 @@ export interface UpdateUserRequest {
   ho_ten?: string;
   tuoi?: number;
   anh_dai_dien?: string;
-}
-
-export interface CreateImageRequest {
-  ten_hinh: string;
-  duong_dan: string;
-  mo_ta?: string;
 }
 
 export interface CreateCommentRequest {
@@ -191,9 +192,7 @@ export const getSavedImages = async (
   return response.json();
 };
 
-export const getMyImages = async (
-  token: string,
-): Promise<{ status: boolean; message: string; data: Image[] }> => {
+export const getMyImages = async (token: string): Promise<ImagesResponse> => {
   const response = await fetch(`${API_BASE_URL}/users/my-images`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -245,15 +244,14 @@ export const getImageDetail = async (
 
 export const createImage = async (
   token: string,
-  data: CreateImageRequest,
+  data: FormData,
 ): Promise<{ status: boolean; message: string; data: Image }> => {
   const response = await fetch(`${API_BASE_URL}/images`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(data),
+    body: data,
   });
   if (!response.ok) {
     throw new Error("Tạo ảnh thất bại");

@@ -6,7 +6,7 @@ interface ImageListProps {
 }
 
 export default function ImageList({ images }: ImageListProps) {
-  if (images.length === 0) {
+  if (!images || images.length === 0) {
     return <p className="no-images">Không có ảnh nào để hiển thị.</p>;
   }
 

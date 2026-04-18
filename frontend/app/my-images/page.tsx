@@ -25,7 +25,8 @@ export default function MyImagesPage() {
   const fetchMyImages = async (authToken: string) => {
     try {
       const response = await getMyImages(authToken);
-      setImages(response.data);
+      setImages(response.data.items);
+      console.log(response);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Lỗi tải ảnh của bạn");
     } finally {
