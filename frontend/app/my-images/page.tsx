@@ -12,6 +12,18 @@ export default function MyImagesPage() {
   const [error, setError] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
+  const fetchMyImages = async (authToken: string) => {
+    try {
+      const response = await getMyImages(authToken);
+      setImages(response.data);
+      console.log(response);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Lỗi tải ảnh của bạn");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (!storedToken) {
@@ -21,18 +33,6 @@ export default function MyImagesPage() {
       fetchMyImages(storedToken);
     }
   }, [router]);
-
-  const fetchMyImages = async (authToken: string) => {
-    try {
-      const response = await getMyImages(authToken);
-      setImages(response.data.items);
-      console.log(response);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Lỗi tải ảnh của bạn");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDeleteImage = async (imageId: number) => {
     if (!token) return;

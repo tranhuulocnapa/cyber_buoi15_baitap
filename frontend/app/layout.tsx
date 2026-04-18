@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -30,14 +31,14 @@ export default function RootLayout({
         <header className="header">
           <nav className="nav">
             <div className="nav-brand">
-              <a href="/">Cyber Gallery</a>
+              <Link href="/">Cyber Gallery</Link>
             </div>
             <ul className="nav-links">
               <li>
-                <a href="/">Trang chủ</a>
+                <Link href="/">Trang chủ</Link>
               </li>
               <li>
-                <a href="/search">Tìm kiếm</a>
+                <Link href="/search">Tìm kiếm</Link>
               </li>
               <li>
                 <a href="/login">Đăng nhập</a>

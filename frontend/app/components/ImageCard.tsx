@@ -5,13 +5,11 @@ interface ImageCardProps {
 }
 
 export default function ImageCard({ image }: ImageCardProps) {
+  const imageUrl = getImageUrl(image.duong_dan);
+
   return (
     <div className="image-card">
-      <img
-        src={getImageUrl(image.duong_dan)}
-        alt={image.ten_hinh}
-        className="image-card__img"
-      />
+      <img src={imageUrl} alt={image.ten_hinh} className="image-card__img" />
       <div className="image-card__content">
         <h3 className="image-card__title">{image.ten_hinh}</h3>
         {image.mo_ta && (

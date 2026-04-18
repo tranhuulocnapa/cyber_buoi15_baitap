@@ -14,12 +14,6 @@ function SearchContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (query) {
-      handleSearch(query);
-    }
-  }, [query]);
-
   const handleSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) return;
 
@@ -36,6 +30,12 @@ function SearchContent() {
     }
   };
 
+  useEffect(() => {
+    if (query) {
+      handleSearch(query);
+    }
+  }, [query]);
+
   return (
     <div className="search-page">
       <h1>Tìm kiếm ảnh</h1>
@@ -47,8 +47,14 @@ function SearchContent() {
 
       {!loading && !error && (
         <div>
-          {query && <p>Kết quả cho: "{query}"</p>}
-          <ImageList images={images} />
+          {query ? (
+            <>
+              <p>Kết quả cho: &quot;{query}&quot;</p>
+              <ImageList images={images} />
+            </>
+          ) : (
+            <p className="no-images">Nhập từ khóa để bắt đầu tìm kiếm.</p>
+          )}
         </div>
       )}
     </div>

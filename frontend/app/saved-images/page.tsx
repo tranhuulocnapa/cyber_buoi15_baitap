@@ -10,32 +10,66 @@ export default function SavedImagesPage() {
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (!storedToken) {
-      router.push("/login");
-    } else {
-      setToken(storedToken);
-      fetchSavedImages(storedToken);
-    }
-  }, [router]);
 
   const fetchSavedImages = async (authToken: string) => {
+    console.log("fetchSavedImages called with token:", authToken);
+
+    if (!authToken) {
+      console.warn("fetchSavedImages aborted: no token");
+      setError("Bạn cần đăng nhập");
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
     try {
+      console.log("fetchSavedImages sending request with token:", authToken);
       const response = await getSavedImages(authToken);
-      setImages(response.data);
+      console.log("fetchSavedImages response status:", response.status);
+      console.log("fetchSavedImages response body:", response);
+
+      if (!response.status) {
+        throw new Error(response.message || "API returned false status");
+      }
+
+      const imagesData = response.data?.items ?? [];
+      console.log("fetchSavedImages setting images:", imagesData);
+      setImages(imagesData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Lỗi tải ảnh đã lưu");
+      console.error("fetchSavedImages error:", err);
+      const errorMessage =
+        err instanceof Error ? err.message : "Lỗi tải ảnh đã lưu";
+
+      if (
+        errorMessage.includes("401") ||
+        errorMessage.includes("Unauthorized")
+      ) {
+        console.warn("401 detected, clearing token and redirecting");
+        localStorage.removeItem("token");
+        router.replace("/login");
+        return;
+      }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  if (!token) {
-    return <div>Đang tải...</div>;
-  }
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    console.log("saved-images token:", storedToken);
+
+    if (!storedToken) {
+      console.warn("No token found, redirecting to login");
+      router.replace("/login");
+      return;
+    }
+
+    fetchSavedImages(storedToken);
+  }, [router]);
 
   if (loading) {
     return <div className="loading">Đang tải ảnh đã lưu...</div>;

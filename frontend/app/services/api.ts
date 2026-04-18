@@ -1,6 +1,9 @@
 const API_BASE_URL = "http://localhost:3069";
 
 export const getImageUrl = (duong_dan: string) => {
+  if (!duong_dan) {
+    return "";
+  }
   if (duong_dan.startsWith("http")) {
     return duong_dan;
   }
@@ -50,6 +53,13 @@ export interface Comment {
     ho_ten: string;
     anh_dai_dien?: string;
   };
+}
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
 }
 
 export interface LoginRequest {
@@ -180,19 +190,25 @@ export const updateUser = async (
 
 export const getSavedImages = async (
   token: string,
-): Promise<{ status: boolean; message: string; data: Image[] }> => {
+): Promise<{
+  status: boolean;
+  message: string;
+  data: { items: Image[]; pagination: Pagination };
+}> => {
   const response = await fetch(`${API_BASE_URL}/users/saved-images`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   if (!response.ok) {
-    throw new Error("Không thể tải ảnh đã lưu");
+    throw new Error(`HTTP ${response.status}: Không thể tải ảnh đã lưu`);
   }
   return response.json();
 };
 
-export const getMyImages = async (token: string): Promise<ImagesResponse> => {
+export const getMyImages = async (
+  token: string,
+): Promise<{ status: boolean; message: string; data: Image[] }> => {
   const response = await fetch(`${API_BASE_URL}/users/my-images`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -262,7 +278,7 @@ export const createImage = async (
 export const deleteImage = async (
   token: string,
   id: number,
-): Promise<{ status: boolean; message: string; data: any }> => {
+): Promise<{ status: boolean; message: string; data: null }> => {
   const response = await fetch(`${API_BASE_URL}/images/${id}`, {
     method: "DELETE",
     headers: {
