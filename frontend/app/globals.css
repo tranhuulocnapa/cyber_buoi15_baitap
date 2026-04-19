@@ -280,6 +280,56 @@ button[type="submit"]:disabled {
   resize: vertical;
 }
 
+.comments-heading {
+  margin-bottom: 20px;
+  font-size: 1.35rem;
+  color: var(--foreground);
+}
+
+.comment-form-area {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.comment-login-prompt {
+  display: grid;
+  gap: 12px;
+}
+
+.comment-login-prompt p {
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.comment-disabled-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f4f4f4;
+  color: #666;
+  resize: vertical;
+}
+
+.login-link {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #1d4ed8;
+  color: white;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.login-link:hover {
+  background: #1e40af;
+}
+
 /* Save button */
 .save-button {
   padding: 8px 16px;
@@ -288,6 +338,21 @@ button[type="submit"]:disabled {
   cursor: pointer;
   font-size: 14px;
   transition: all 0.2s;
+}
+
+.detail-link {
+  display: inline-block;
+  padding: 8px 14px;
+  margin-right: 8px;
+  border-radius: 6px;
+  background: #1d4ed8;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.detail-link:hover {
+  background: #1e40af;
 }
 
 .save-button:not(.saved) {

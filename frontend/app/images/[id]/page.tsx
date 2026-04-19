@@ -91,14 +91,29 @@ export default function ImageDetailPage() {
       </div>
 
       <div className="comments-section">
+        <h2 className="comments-heading">Bình luận</h2>
         <CommentsList comments={comments} />
-        {token && (
-          <CreateCommentForm
-            token={token}
-            imageId={imageId}
-            onCommentCreated={handleCommentCreated}
-          />
-        )}
+        <div className="comment-form-area">
+          {token ? (
+            <CreateCommentForm
+              token={token}
+              imageId={imageId}
+              onCommentCreated={handleCommentCreated}
+            />
+          ) : (
+            <div className="comment-login-prompt">
+              <p>Bạn cần đăng nhập để viết bình luận.</p>
+              <textarea
+                className="comment-disabled-textarea"
+                placeholder="Đăng nhập để bình luận"
+                disabled
+              />
+              <a href="/login" className="login-link">
+                Đăng nhập ngay
+              </a>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
